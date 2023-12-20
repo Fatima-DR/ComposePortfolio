@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,7 +35,10 @@ import com.example.composelearning.R
 import com.example.composelearning.ui.theme.Padding
 
 @Composable
-fun PostActions() {
+fun PostActions(
+    commentsAction: () -> Unit,
+    onCommentsLayout: (Float) -> Unit
+) {
 
     var isFavorite by remember { mutableStateOf(false) }
     var isBookmarked by remember { mutableStateOf(true) }
@@ -46,27 +54,37 @@ fun PostActions() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(Padding.MEDIUM)
+                horizontalArrangement = Arrangement.spacedBy(Padding.MEDIUM),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
+                Icon(
                     painter = if (isFavorite) {
                         painterResource(id = R.drawable.ic_like)
                     } else {
                         painterResource(R.drawable.ic_unlike)
                     },
+                    tint = Color.Unspecified,
                     contentDescription = "like or unlike",
                     modifier = Modifier
                         .clickable { isFavorite = !isFavorite }
                         .defaultImageSize()
                 )
 
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_comment),
                     contentDescription = "comment",
-                    modifier = Modifier.defaultImageSize()
+                    modifier = Modifier
+                        .defaultImageSize()
+                        .clickable {
+                            commentsAction()
+                        }
+                        .onGloballyPositioned {
+                            //get position of comments icon to start animation from
+                            onCommentsLayout(it.positionInRoot().y)
+                        }
                 )
 
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_share),
                     contentDescription = "share",
                     modifier = Modifier.defaultImageSize()
@@ -106,7 +124,10 @@ private fun Modifier.defaultImageSize() = size(24.dp)
 @Preview
 @Composable
 fun PostActionsPreview() {
-    PostActions()
+    PostActions(
+        commentsAction = {},
+        onCommentsLayout = {}
+    )
 }
 
 private fun countLikes(isClicked: Boolean): Int {
