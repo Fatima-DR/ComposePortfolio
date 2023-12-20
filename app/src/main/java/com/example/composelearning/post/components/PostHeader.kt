@@ -23,10 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composelearning.R
+import com.example.composelearning.ui.theme.Padding
 
 
 @Composable
-private fun PostHeader() {
+fun PostHeader() {
 
     val ringBrush = remember {
         Brush.sweepGradient(
@@ -41,11 +42,13 @@ private fun PostHeader() {
     val borderWidth = 1.5.dp
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Padding.MEDIUM),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(Padding.MEDIUM)) {
             Image(
                 painter = painterResource(id = R.drawable.avatar),
                 contentDescription = "avatar",
