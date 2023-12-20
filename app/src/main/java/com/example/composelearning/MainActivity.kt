@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.composelearning.post.PostItem
+import com.example.composelearning.post.PostItemScreen
 import com.example.composelearning.ui.theme.ComposeLearningTheme
 
 @Suppress("suppressKotlinVersionCompatibilityCheck")
@@ -23,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    PostItem()
+                    PostItemScreen()
                 }
             }
         }
